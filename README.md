@@ -19,7 +19,7 @@ Your object:
 
 Filling your template:
 
-`SimpleTemplates.fill(demoTemplate,demoObject,{working:{'true':'has a job','false':'needs a job'}});`
+`SimpleTemplate.fill(demoTemplate,demoObject,{working:{'true':'has a job','false':'needs a job'}});`
 
 or 
 
