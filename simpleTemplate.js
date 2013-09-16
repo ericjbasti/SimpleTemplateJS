@@ -1,13 +1,12 @@
 var SimpleTemplate={
-	ver:'1.1'
+	ver:'1.1',
+	template:{}
 };
 
 SimpleTemplate.fill = function(who,where,props){
-	var temp=who;
+	var temp=SimpleTemplate.template[who] || who;
 	var identifier;
 	for (var i in where){
-		console.log(typeof(where[i]));
-
 		if(typeof(where[i])=='object'){
 			for (var j in where[i]){
 				identifier = new RegExp("\\%" + i + "."+j+"\\%", "g");
@@ -28,4 +27,12 @@ SimpleTemplate.fill = function(who,where,props){
 		}
 	}
 	return temp;
+}
+
+SimpleTemplate.loadTemplate = function(who){
+	if(document.getElementById(who)){
+		SimpleTemplate.template[who]=document.getElementById(who).innerHTML;
+	}else{
+		console.log('failed to load template ['+who+']')
+	}
 }
