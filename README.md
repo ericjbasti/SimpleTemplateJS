@@ -15,11 +15,11 @@ or
 
 Your object:
 
-`var demoObject={name:'Eric',age:'32',working:true,image:['imageSrc.jpg']};`
+`var demoObject={name:'Eric',age:'32',dog:true,image:['imageSrc.jpg']};`
 
 Filling your template:
 
-`SimpleTemplate.fill(demoTemplate,demoObject,{working:{'true':'has a job','false':'needs a job'}});`
+`SimpleTemplate.fill(demoTemplate,demoObject,{working:{'true':'has a dog','false':'needs a dog'}});`
 
 or 
 
