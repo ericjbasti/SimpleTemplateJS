@@ -4,11 +4,23 @@ SimpleTemplateJS
 An extremely simple template system. 
 
 
-example use:
+creating a template:
 
+`var demoTemplate='%name%, %age%, %working%, %image.0%';`
 
+or
 
-var demoTemplate='%name%, %age%, %working%, %image.0%'; // string, string, boolean, array
-var demoObject={name:'Eric',age:'32',working:true,image:['imageSrc.jpg']};
+`<script id="test_template" type="template"><div class="%name%"></div></script>`
+`SimpleTemplate.loadTemplate('test_template');`
 
-SimpleTemplates.fill(demoTemplate,demoObject,{working:{'true':'has a job','false':'needs a job'}});
+Your object:
+
+`var demoObject={name:'Eric',age:'32',working:true,image:['imageSrc.jpg']};`
+
+Filling your template:
+
+`SimpleTemplates.fill(demoTemplate,demoObject,{working:{'true':'has a job','false':'needs a job'}});`
+
+or 
+
+`SimpleTemplate.fill('test_template',demoObject);`
