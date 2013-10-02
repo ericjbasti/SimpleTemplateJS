@@ -29,6 +29,14 @@ SimpleTemplate.fill = function(who,where,props){
 	return temp;
 }
 
+SimpleTemplate.arrayFill = function(who, where, props){
+	var temp = [];
+	for (var i= 0; i!= where.length; i++){
+		temp.push(SimpleTemplate.fill(who,where[i],props));
+	}
+	return(temp.join(''));
+}
+
 SimpleTemplate.loadTemplate = function(who){
 	if(document.getElementById(who)){
 		SimpleTemplate.template[who]=document.getElementById(who).innerHTML;
