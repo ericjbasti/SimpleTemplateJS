@@ -31,7 +31,7 @@ SimpleTemplate._fill = function(who,where,props){
 
 SimpleTemplate.fill = function(who, where, props){
 	var temp = [];
-	if(who.length && typeof(who)!='string'){
+	if(where.length && typeof(where)!='string'){
 		for (var i= 0; i!= where.length; i++){
 			temp.push(SimpleTemplate._fill(who,where[i],props));
 		}
