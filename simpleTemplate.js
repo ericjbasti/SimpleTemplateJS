@@ -32,8 +32,18 @@ SimpleTemplate._fill = function(who,where,props){
 SimpleTemplate.fill = function(who, where, props){
 	var temp = [];
 	if(where.length && typeof(where)!='string'){
-		for (var i= 0; i!= where.length; i++){
-			temp.push(SimpleTemplate._fill(who,where[i],props));
+		if(where.length){
+			for (var i= 0; i!= where.length; i++){
+				temp.push(SimpleTemplate._fill(who,where[i],props));
+			}
+		}else{
+			for (var j in where){
+				var that = {'this':j};
+				for (var k in where[j]){
+					that[k]=where[j][k];
+				}
+				temp.push(SimpleTemplate._fill(who,that,props));
+			}
 		}
 	}else{
 		temp.push(SimpleTemplate._fill(who,where,props));
