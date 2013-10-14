@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>%title%</title>
+	</head>
+	<body>
+
+	</body>
+</html>
+
+<script type="simple/template" id="page">
+	<div style="color: %color%;">
+		<h1>%title%</h1>
+		this is a simple demo
+		listings:
+			%lists.repeat.10%
+	</div>
+</script>
+
+<script src="../simpleTemplate.js"></script>
+
+<script>
+	var page={title:'SimpleTemplate Demo Page',color:'orange',lists:};
+
+	document.body.innerHTML=SimpleTemplate.fill("page",page);
+</script>

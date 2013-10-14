@@ -1,9 +1,9 @@
 var SimpleTemplate={
-	ver:'1.1',
+	ver:'1.2',
 	template:{}
 };
 
-SimpleTemplate.fill = function(who,where,props){
+SimpleTemplate._fill = function(who,where,props){
 	var temp=SimpleTemplate.template[who] || who;
 	var identifier;
 	for (var i in where){
@@ -29,10 +29,14 @@ SimpleTemplate.fill = function(who,where,props){
 	return temp;
 }
 
-SimpleTemplate.arrayFill = function(who, where, props){
+SimpleTemplate.fill = function(who, where, props){
 	var temp = [];
-	for (var i= 0; i!= where.length; i++){
-		temp.push(SimpleTemplate.fill(who,where[i],props));
+	if(who.length && typeof(who)!='string'){
+		for (var i= 0; i!= where.length; i++){
+			temp.push(SimpleTemplate._fill(who,where[i],props));
+		}
+	}else{
+		temp.push(SimpleTemplate._fill(who,where,props));
 	}
 	return(temp.join(''));
 }
@@ -44,3 +48,14 @@ SimpleTemplate.loadTemplate = function(who){
 		console.log('failed to load template ['+who+']')
 	}
 }
+
+SimpleTemplate.loadTemplates = function(){
+	var temp = document.getElementsByTagName('script');
+	for (var i=0;i!=temp.length;i++){
+		if(temp[i].type=='simple/template'){
+			var who = temp[i].id;
+			SimpleTemplate.template[who]=temp[i].innerHTML;
+		}
+	}
+}
+SimpleTemplate.loadTemplates();
