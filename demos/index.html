@@ -3,26 +3,29 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>%title%</title>
+		<title>{@SimpleTemplate}</title>
 	</head>
 	<body>
 
 	</body>
 </html>
 
+<script type="simple/template" id="sample_list">
+	<div>I am : {@name}</div>
+</script>
+
 <script type="simple/template" id="page">
-	<div style="color: %color%;">
-		<h1>%title%</h1>
+	<div style="color: {@color};">
+		<h1>{@title}</h1>
 		this is a simple demo
-		listings:
-			%lists.repeat.10%
+		{@kids:sample_list}
 	</div>
 </script>
 
 <script src="../simpleTemplate.js"></script>
 
 <script>
-	var page={title:'SimpleTemplate Demo Page',color:'orange',lists:};
+	var page={title:'SimpleTemplate Demo Page',color:'orange', kids:[{name: 'Eric', age: 35, visible: false},{name: 'Aaron', age: 42, visible: true}]};
 
 	document.body.innerHTML=SimpleTemplate.fill("page",page);
 </script>

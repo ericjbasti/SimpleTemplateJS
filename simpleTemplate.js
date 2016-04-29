@@ -77,14 +77,19 @@ SimpleTemplate.getTags = function(a) {
 		var temp = found[i];
 		var prop = null;
 		var func = null;
+		var subtemplate = null;
 
 		// We need to remove the template tags from our properties.
 		temp = temp.replace('{@', '').replace('}', '');
 
+		subtemplate = temp.split(':')[1];
+		if(subtemplate){
+			temp = temp.split(':')[0];
+		}
 		// We'll start at the very end of the string and look for a function call.
 		func = temp.split(',')[1];
 		if (func) { // If we find one, we save it and remove it from temp.
-			temp = temp.split(',')[0].trim();
+			temp = temp.split(',')[0];
 		}
 
 		// Now we look for a propery
@@ -96,7 +101,8 @@ SimpleTemplate.getTags = function(a) {
 		tags[found[i]] = {
 			prop: prop,
 			func: func,
-			tag: temp
+			tag: temp,
+			subtemplate: subtemplate
 		}
 	}
 	return (tags);
@@ -127,6 +133,19 @@ SimpleTemplate.fill = function(template, obj) {
 				result = SimpleTemplate.functions.define(result);
 			} catch (e) {
 				console.log('SimpleTemplate (' + result + '): ' + e.message);
+			}
+		}
+		if (template.tags[i].subtemplate){
+			if(result.length){
+				var tempResult = '';
+				for(var r = 0; r<result.length; r++){
+					tempResult+=SimpleTemplate.fill(template.tags[i].subtemplate, result[r]);
+				}
+				result = tempResult;
+			}else{
+				if(result){
+					result = SimpleTemplate.fill(template.tags[i].subtemplate, result);
+				}
 			}
 		}
 
