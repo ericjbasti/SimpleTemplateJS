@@ -36,24 +36,23 @@ var SimpleTemplate = {
 
 SimpleTemplate.loadTemplate = function(who) {
 	if (document.getElementById(who)) {
-		SimpleTemplate.template[who] = document.getElementById(who).innerHTML;
+		this.template[who] = document.getElementById(who).innerHTML;
 	} else {
 		console.log('failed to load template [' + who + ']')
 	}
 }
 
 SimpleTemplate.buildTemplateFromString = function(name, str) {
-	SimpleTemplate.template[name] = {
+	this.template[name] = {
 		markup: str,
 		tags: null
 	}
-	SimpleTemplate.template[name].tags = SimpleTemplate.getTags(str);
+	this.template[name].tags = this.getTags(str);
 }
 
 SimpleTemplate.addFunction = function(name, callback) {
 	this.functions[name] = callback;
 }
-
 
 SimpleTemplate.loadTemplates = function() {
 	var temp = document.getElementsByTagName('script');
@@ -61,17 +60,17 @@ SimpleTemplate.loadTemplates = function() {
 		if (temp[i].type == 'simple/template') {
 			var who = temp[i].id;
 			var markup = temp[i].innerHTML
-			SimpleTemplate.template[who] = {
+			this.template[who] = {
 				markup: markup,
 				tags: null
 			}
-			SimpleTemplate.template[who].tags = SimpleTemplate.getTags(markup);
+			this.template[who].tags = this.getTags(markup);
 		}
 	}
 }
 
 SimpleTemplate.getTags = function(a) {
-	var found = a.match(SimpleTemplate.regex);
+	var found = a.match(this.regex);
 	var tags = {};
 	for (var i in found) {
 		var temp = found[i];
@@ -84,11 +83,13 @@ SimpleTemplate.getTags = function(a) {
 
 		subtemplate = temp.split(':')[1];
 		if(subtemplate){
+			subtemplate = subtemplate.trim();
 			temp = temp.split(':')[0];
 		}
 		// We'll start at the very end of the string and look for a function call.
 		func = temp.split(',')[1];
 		if (func) { // If we find one, we save it and remove it from temp.
+			func = func.trim();
 			temp = temp.split(',')[0];
 		}
 
@@ -108,13 +109,15 @@ SimpleTemplate.getTags = function(a) {
 	return (tags);
 }
 
-SimpleTemplate.fill = function(template, obj) {
+SimpleTemplate._fill = function(template, obj) {
 	var template = this.template[template];
 	var output = template.markup;
 	var identifier, value;
+
 	for (var i in template.tags) {
 		identifier = new RegExp("\\" + i, "g");
-		var result = obj[template.tags[i].tag] || '';
+		var result = obj[template.tags[i].tag];
+		
 		if (template.tags[i].prop) {
 			try {
 				result = result[template.tags[i].prop];
@@ -124,13 +127,13 @@ SimpleTemplate.fill = function(template, obj) {
 		}
 		if (template.tags[i].func) {
 			try {
-				result = SimpleTemplate.functions[template.tags[i].func](result);
+				result = this.functions[template.tags[i].func](result);
 			} catch (e) {
 				console.log('SimpleTemplate (' + result + '): ' + e.message);
 			}
 		} else {
 			try {
-				result = SimpleTemplate.functions.define(result);
+				result = this.functions.define(result);
 			} catch (e) {
 				console.log('SimpleTemplate (' + result + '): ' + e.message);
 			}
@@ -139,19 +142,36 @@ SimpleTemplate.fill = function(template, obj) {
 			if(result.length){
 				var tempResult = '';
 				for(var r = 0; r<result.length; r++){
-					tempResult+=SimpleTemplate.fill(template.tags[i].subtemplate, result[r]);
+					tempResult+=this._fill(template.tags[i].subtemplate, result[r]);
 				}
 				result = tempResult;
 			}else{
-				if(result){
-					result = SimpleTemplate.fill(template.tags[i].subtemplate, result);
+				// we check to see if its a value that exist.
+				// AND then we make sure its NOT an empty array []
+				if(result && ! result.pop){
+					result = this._fill(template.tags[i].subtemplate, result);
 				}
 			}
 		}
 
 		output = output.replace(identifier, result);
-	}
+	} 
 	return (output);
 }
+
+SimpleTemplate.fill = function(template,obj){
+	var result = '';
+	if(obj.length){
+		var tempResult = '';
+		for(var r = 0; r<obj.length; r++){
+			tempResult+=this._fill(template, obj[r]);
+		}
+		result = tempResult;
+	}else{
+		result = this._fill(template, obj);
+	}
+	return (result);
+}
+
 
 SimpleTemplate.loadTemplates();

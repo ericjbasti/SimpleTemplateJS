@@ -10,22 +10,243 @@
 	</body>
 </html>
 
-<script type="simple/template" id="sample_list">
-	<div>I am : {@name}</div>
+<script type="simple/template" id="kid_list">
+	<li>I am : {@name} and Im {@age} years old</li>
+	<ul>{@kids:kid_list}</ul>
 </script>
+
 
 <script type="simple/template" id="page">
 	<div style="color: {@color};">
 		<h1>{@title}</h1>
-		this is a simple demo
-		{@kids:sample_list}
+		<p>This is an example of how complex templates can be created using sub-templates<br>
+		&#123;@kids:kid_list&#125;<br>
+		By placing this in your template it will take the value of 'kids' and run it ':' through the template 'kids_list'.</p>
+		<p>
+		We acheive the recursion you see below by actually calling &#123;@kids:kid_list&#125; in that very template. </p>
+
+
+		<ul>{@kids:kid_list}</ul>
 	</div>
 </script>
 
 <script src="../simpleTemplate.js"></script>
 
 <script>
-	var page={title:'SimpleTemplate Demo Page',color:'orange', kids:[{name: 'Eric', age: 35, visible: false},{name: 'Aaron', age: 42, visible: true}]};
+	var People = {
+    title: 'These are people.',
+    kids: [{
+        "name": "Deloris Holden",
+        "age": 33,
+        "kids": [{
+            "name": "Mack Herman",
+            "age": 40,
+            "kids": [{
+                "name": "Hobbs Mcdowell",
+                "age": 22,
+                "kids": [{
+                    "name": "Mack Herman",
+                    "age": 40,
+                    "kids": [{
+                        "name": "Hobbs Mcdowell",
+                        "age": 22
+                    }, {
+                        "name": "Victoria Walls",
+                        "age": 38
+                    }, {
+                        "name": "Bauer Jarvis",
+                        "age": 24
+                    }]
+                }]
+            }, {
+                "name": "Victoria Walls",
+                "age": 38
+            }, {
+                "name": "Bauer Jarvis",
+                "age": 24
+            }]
+        }]
+    }, {
+        "name": "Charlotte Owens",
+        "age": 33,
+        "kids": [{
+            "name": "Mack Herman",
+            "age": 40,
+            "kids": [{
+                "name": "Hobbs Mcdowell",
+                "age": 22
+            }, {
+                "name": "Victoria Walls",
+                "age": 38
+            }, {
+                "name": "Bauer Jarvis",
+                "age": 24
+            }]
+        }, {
+            "name": "Miranda Mcpherson",
+            "age": 31,
+            "kids": [{
+                "name": "Coffey Le",
+                "age": 22
+            }, {
+                "name": "Le Pollard",
+                "age": 30
+            }, {
+                "name": "Swanson Kennedy",
+                "age": 30
+            }, {
+                "name": "Campbell Lawrence",
+                "age": 21
+            }]
+        }]
+    }, {
+        "name": "Oconnor Bridges",
+        "age": 25,
+        "kids": [{
+            "name": "Burris Weiss",
+            "age": 20,
+            "kids": [{
+                "name": "Wooten Carroll",
+                "age": 20
+            }, {
+                "name": "Haynes Santana",
+                "age": 25
+            }, {
+                "name": "Marian Williamson",
+                "age": 39
+            }]
+        }, {
+            "name": "Raymond Mathis",
+            "age": 35,
+            "kids": null
+        }]
+    }, {
+        "name": "Laura Wall",
+        "age": 40,
+        "kids": [{
+            "name": "Lynnette Bennett",
+            "age": 29,
+            "kids": null
+        }, {
+            "name": "Martina Mcleod",
+            "age": 29,
+            "kids": [{
+                "name": "Dunn Paul",
+                "age": 27
+            }, {
+                "name": "Aimee Benjamin",
+                "age": 39
+            }]
+        }]
+    }, {
+        "name": "Lori William",
+        "age": 25,
+        "kids": null
+    }, {
+        "name": "Stafford Bradford",
+        "age": 29,
+        "kids": [{
+            "name": "Selma Hebert",
+            "age": 31,
+            "kids": [{
+                "name": "Pugh Mcdonald",
+                "age": 38
+            }]
+        }]
+    }, {
+        "name": "Burke Shaffer",
+        "age": 35,
+        "kids": [{
+            "name": "Ruby Willis",
+            "age": 30,
+            "kids": null
+        }, {
+            "name": "Danielle Stevens",
+            "age": 38,
+            "kids": [{
+                "name": "Marguerite Dickson",
+                "age": 38
+            }]
+        }, {
+            "name": "Stanley Barlow",
+            "age": 24,
+            "kids": null
+        }]
+    }, {
+        "name": "Roxie Shannon",
+        "age": 24,
+        "kids": [{
+            "name": "Benita Stafford",
+            "age": 28,
+            "kids": [{
+                "name": "Bullock Carey",
+                "age": 32
+            }, {
+                "name": "Tami Olson",
+                "age": 28
+            }, {
+                "name": "Vilma James",
+                "age": 23
+            }, {
+                "name": "Walker Leonard",
+                "age": 32
+            }]
+        }]
+    }, {
+        "name": "Edwina Mason",
+        "age": 28,
+        "kids": [{
+            "name": "Angelica Gregory",
+            "age": 23,
+            "kids": null
+        }, {
+            "name": "Valdez York",
+            "age": 24,
+            "kids": null
+        }, {
+            "name": "Patton Crane",
+            "age": 22,
+            "kids": [{
+                "name": "Rowe Thornton",
+                "age": 32
+            }, {
+                "name": "Sandra Witt",
+                "age": 27
+            }, {
+                "name": "Alexandria Horn",
+                "age": 22
+            }]
+        }, {
+            "name": "Jennings Vincent",
+            "age": 23,
+            "kids": [{
+                "name": "Jillian Melendez",
+                "age": 25
+            }, {
+                "name": "Brown Reid",
+                "age": 27
+            }, {
+                "name": "Lelia Kim",
+                "age": 33
+            }, {
+                "name": "Mays Gilbert",
+                "age": 35
+            }]
+        }]
+    }, {
+        "name": "Cherry Little",
+        "age": 34,
+        "kids": [{
+            "name": "Alyce Patton",
+            "age": 28,
+            "kids": [{
+                "name": "Lara Bush",
+                "age": 22
+            }]
+        }]
+    }]
+};
 
-	document.body.innerHTML=SimpleTemplate.fill("page",page);
+document.body.innerHTML=SimpleTemplate.fill("page",People);
+
 </script>
