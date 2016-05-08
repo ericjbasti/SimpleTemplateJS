@@ -18,7 +18,7 @@
 
 <script type="simple/template" id="page">
 	<div style="color: {@color};">
-		<h1>{@title}</h1>
+		<h1 class="title">{@title}</h1>
 		<p>This is an example of how complex templates can be created using sub-templates<br>
 		&#123;@kids:kid_list&#125;<br>
 		By placing this in your template it will take the value of 'kids' and run it ':' through the template 'kids_list'.</p>
@@ -247,6 +247,15 @@
     }]
 };
 
-document.body.innerHTML=SimpleTemplate.fill("page",People);
+//document.body.innerHTML=SimpleTemplate.fill("page", People);
 
+var Sample = SimpleTemplate.fill("page", People, {
+    ready: function(z){
+        alert('all done');
+        var temp = z.getElementsByClassName('title');
+        temp[0].onclick = function(){alert('hello')};
+    }
+});
+
+document.body.appendChild(Sample);
 </script>

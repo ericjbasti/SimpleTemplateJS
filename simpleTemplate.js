@@ -60,11 +60,8 @@ SimpleTemplate.loadTemplates = function() {
 		if (temp[i].type == 'simple/template') {
 			var who = temp[i].id;
 			var markup = temp[i].innerHTML
-			this.template[who] = {
-				markup: markup,
-				tags: null
-			}
-			this.template[who].tags = this.getTags(markup);
+
+			this.buildTemplateFromString(who,markup);
 		}
 	}
 }
@@ -159,7 +156,7 @@ SimpleTemplate._fill = function(template, obj) {
 	return (output);
 }
 
-SimpleTemplate.fill = function(template,obj){
+SimpleTemplate.fill = function(template,obj,attr){
 	var result = '';
 	if(obj.length){
 		var tempResult = '';
@@ -169,6 +166,14 @@ SimpleTemplate.fill = function(template,obj){
 		result = tempResult;
 	}else{
 		result = this._fill(template, obj);
+	}
+	if(attr){
+		var dom = document.createElement(attr.domElement || 'div');
+		dom.innerHTML = result;
+		if (attr.ready){
+			attr.ready(dom);
+		}
+		return (dom);
 	}
 	return (result);
 }
